@@ -1,19 +1,15 @@
-
 def calculate(name, seeds):
     '''(str, int) -> int, str
 
     This code takes the name of a vegetable from SoS: FoMT and the quantity of seeds you'll use,
-    and returns it's total profit at the end of the season, the season on which it grows and if it regrows or not.
+    searches for that vegetable in a data base and retiurns it's total profit at the end of
+    the season, the season on which it grows and if it regrows or not.
 
     >>> calculate('Tomato', 1)
     3760 Summer Regrow
     >>> calc('Potato', 1)
     2280 Spring No regrow
     '''
-    
-    vegetables = [['Turnip', 4, 0, 120, 60], [ 'Potato', 7, 0, 150, 80], ['Cucumber', 9, 5, 200, 60], ['Strawberries', 9, 3, 15, 65], ['Cabbage', 14, 0 , 500, 250], ['Moon Drop Flower', 6, 0, 500, 10], ['Toy Flower', 12, 0, 400, 10],
-             ['Tomato', 9, 3, 200, 55], ['Corn', 14, 3, 300, 85], ['Onion', 7, 0, 150, 80], ['Pumpkin', 14, 0, 500, 280], ['Pinapple', 20, 5, 1000, 500], ['Pink Cat Flower', 6, 0, 300, 10],
-              ['Eggplant', 9, 3, 120, 60], ['Yam', 6, 3, 300, 55], ['Carrot', 7, 0, 300, 120], ['Spinach', 5, 0, 200, 110], ['Green Pepper', 7, 2, 150, 40], ['Adzuki Beans', 10, 4, 300, 80], ['Chili Peppers', 12, 5, 300, 100], ['Blue Magic Red Flower', 10, 0, 600, 10], ['True Magic Red Flower', 10, 0, 600, 200], ['Sunset Flowe', 10, 0, 1000, 10]]
     
 
     grow_time = 0
@@ -24,19 +20,22 @@ def calculate(name, seeds):
     regrow = 'No regrow'
     season = ''
     test = 0
-    p = -1
+    p = ''
 
 
-    for i in range(len(vegetables)):
-        if name in vegetables[i]:
-            p = i
+    lists = open('data.txt', 'r')
 
-    if p >= 0:
-        seed_name = vegetables[p][0]
-        grow_time  = vegetables[p][1]
-        regrow_time = vegetables[p][2]
-        seed_price = vegetables[p][3]
-        selling_price = vegetables[p][4]
+    for line in lists:
+        veggie = line[0:21].strip()
+        if veggie == name:
+            p = line
+
+    if p != '':
+        seed_name = p[0:21].strip()
+        grow_time  = int(p[22:24])
+        regrow_time = int(p[25:26])
+        seed_price = int(p[27:31])
+        selling_price = int(p[32:35])
     else:
         return 'Wrong vegetable'
     
@@ -48,19 +47,14 @@ def calculate(name, seeds):
         production = 30 // grow_time
         profit = (((seeds * 9) * production)* selling_price) - ((seed_price * seeds) * production)
         
-
-    if p <= 6:
+    if p[36] == '1':
         season = 'Spring'
-    elif 7 >= p < 13:
+    elif p[36] == '2':
         season = 'Summer'
     else:
         season = 'Fall'
+       
         
-    
-    
     
 
     return print(profit, season, regrow)
-
- 
-
